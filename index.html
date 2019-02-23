@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Controlar Animaciones</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: linear-gradient(0.45turn, #999, #fff);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .container {
+            border: 1px solid red;
+            width: 75vw;
+        }
+        .object {
+            width: 200px;
+            height: 200px;
+        }
+        .circle {
+            border-radius: 50%;
+            background-image: linear-gradient(0.45turn, rgb(4, 0, 255), rgb(34, 66, 243));
+        }
+        .box {
+            background-image: linear-gradient(0.45turn, rgb(0, 180, 0), rgb(62, 255, 23));
+        }
+        .triangle {
+            width: 0; 
+            height: 0; 
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 173.2px solid red;
+            transition-duration: 5s;
+            transition-timing-function: linear;
+        }
+        .container:hover .triangle{
+            transform: translateX(calc(75vw - 200px)) rotate(360deg);
+        }
+        .btns-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            width: 10vw;
+        }
+        .btns-container div{
+            margin: 0;
+            padding: 0;
+            border: 1px transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        button {
+            padding: 5px;
+            margin: 2px;
+            background-image: linear-gradient(0.45turn, #333, #555);
+            color: white;
+            border-radius: 5px;
+            outline: 0;
+            width: 70px;
+            font-weight: bolder;
+            cursor: pointer;
+            box-shadow: inset 0 -.2em rgba(0,0,0,.3);
+            transition: .1s;
+        }
+        button:active{
+            transform: scale(.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="object circle" id="circle"></div>
+        <div class="object box" id="box"></div>
+        <div class="object triangle" id="triangle"></div>
+    </div>
+    <div class="btns-container">
+        <div class="circle-buttons">
+            <p>Circle</p>
+            <button id="circ-start">start</button>
+            <button id="circ-pause">pause</button>
+            <button id="circ-stop">stop</button>
+            <button id="circ-reverse">reverse</button>
+        </div>
+        <div class="box-buttons">
+            <p>Box</p>
+            <button id="box-start">start</button>
+            <button id="box-pause">pause</button>
+            <button id="box-stop">stop</button>
+            <button id="box-reverse">reverse</button>
+        </div>
+        <div class="triangle-buttons">
+            <p>Triangle</p>
+            <button id="tri-start">start</button>
+            <button id="tri-pause">pause</button>
+            <button id="tri-stop">stop</button>
+            <button id="tri-reverse">reverse</button>
+        </div>
+    </div>
+    <script>
+        const $circle = document.getElementById('circle')
+        const $circStart = document.getElementById('circ-start')
+        const $circPause = document.getElementById('circ-pause')
+        const $circStop = document.getElementById('circ-stop')
+        const $circReverse = document.getElementById('circ-reverse')
+
+        const $box = document.getElementById('box')
+        const $boxStart = document.getElementById('box-start')
+        const $boxPause = document.getElementById('box-pause')
+        const $boxStop = document.getElementById('box-stop')
+        const $boxReverse = document.getElementById('box-reverse')
+
+        const $triangle = document.getElementById('triangle')
+        const $triStart = document.getElementById('tri-start')
+        const $triPause = document.getElementById('tri-pause')
+        const $triStop = document.getElementById('tri-stop')
+        const $triReverse = document.getElementById('tri-reverse')
+
+        let circleFrames = [
+            {transform: 'translateX(0) translateY(0) scale(1)'},
+            {transform: 'translateX(20vw) translateY(400px) scale(.8)', offset: 0.35 },
+            {transform: 'translateX(40vw) translateY(0) scale(1)', offset: 0.7 },
+            {transform: 'translateX(60vw) translateY(400px) scale(.8)' }
+        ]
+        let circleProps = {
+            duration: 3000,
+            iterations: Infinity,
+            direction: 'alternate'
+        }
+        const animatedCircle = $circle.animate(circleFrames, circleProps)
+        $circStart.addEventListener('click', () => {
+            animatedCircle.play()
+        })
+        $circPause.addEventListener('click', () => {
+            animatedCircle.pause()
+        })
+        $circStop.addEventListener('click', () => {
+            animatedCircle.cancel()
+        })
+        $circReverse.addEventListener('click', () => {
+            animatedCircle.reverse()
+        })
+
+        let boxFrames = [
+            { transform: 'translateX(0) translateY(0)'},
+            { transform: 'translateX(0) translateY(-200px)', offset: 0.2 },
+            { transform: 'translateX(200px) translateY(-200px)', offset: 0.3 },
+            { transform: 'translateX(200px) translateY(170px)', offset: 0.4 },
+            { transform: 'translateX(400px) translateY(170px)', offset: 0.6 },
+            { transform: 'translateX(400px) translateY(-200px)', offset: 0.8 },
+            { transform: 'translateX(600px) translateY(-200px)', offset: 0.9 },
+            { transform: 'translateX(600px) translateY(170px)' }
+        ]
+        let boxProps = {
+            duration: 3000,
+            iterations: Infinity,
+            direction: 'alternate'
+        }
+        const animatedBox = $box.animate(boxFrames, boxProps)
+        $boxStart.addEventListener('click', () => {
+            animatedBox.play()
+        })
+        $boxPause.addEventListener('click', () => {
+            animatedBox.pause()
+        })
+        $boxStop.addEventListener('click', () => {
+            animatedBox.cancel()
+        })
+        $boxReverse.addEventListener('click', () => {
+            animatedBox.reverse()
+        })
+
+        let triangleFrames = [
+            {transform: 'translate(0) rotate(0)'},
+            {transform: 'translate(45vw,-50vh) rotate(360deg)'}
+        ]
+        let triangleProps = {
+            duration: 3000,
+            iterations: Infinity,
+            direction: 'alternate'
+        }
+        const animatedTriangle = $triangle.animate(triangleFrames, triangleProps)
+        $triStart.addEventListener('click', () => {
+            animatedTriangle.play()
+        })
+        $triPause.addEventListener('click', () => {
+            animatedTriangle.pause()
+        })
+        $triStop.addEventListener('click', () => {
+            animatedTriangle.cancel()
+        })
+        $triReverse.addEventListener('click', () => {
+            animatedTriangle.reverse()
+        })
+
+    </script>
+</body>
+</html>
